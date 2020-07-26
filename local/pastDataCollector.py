@@ -39,36 +39,53 @@ conn = pymysql.connect(host='localhost', port=3306, user='ADMIN', passwd='ADMIN'
 cur = conn.cursor()
 
 
+row = 0
 
 for st in csvReader:
-        
-    StockCode = st[1]
-    CompanyName = st[2]
-    print(StockCode, "-" , CompanyName)
-    print(st[0],StockCode,CompanyNamem)
-    try:
-        if selection == str(1):
-            stock_data = web.DataReader("%s.KS" %st[1],'yahoo',start,end)
-        if selection == str(2):
-            stock_data = web.DataReader("%s.KQ" %st[1],'yahoo',start,end)
 
+    print(st)    
+    
+    StockCode = st[0]
+    CompanyName = st[1]
+    print(st[0],StockCode,CompanyName)
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    try:
+        print("0번마")
+        if selection == str(1):
+            stock_data = web.DataReader("%s.KS" %st[0],'yahoo',start,end)
+        if selection == str(2):
+            print("너냐")
+            stock_data = web.DataReader("%s.KQ" %st[0],'yahoo',start,end)
+            print("너냐!")
+        print("1번마")
         stock_data.loc[:,'Company'] = CompanyName
         stock_data.loc[:,'StockCode'] = StockCode
         stock_data.loc[:,'Date'] = stock_data.index.astype('str')
-        json = open('/Users/sh/Documents/_iPython/Stock_Data/DAILY_STOCK_DATA.json','a')
+        json = open('DAILY_STOCK_DATA.json','a')
         #StockData.append(stock_data)
         #json.dumps(stock_data, ensure_ascii=False, sort_keys=False, separators=(',', ':')).encode('utf-8')
         # force_ascii=False for korean
+        print("2번마")
         json.write(stock_data.to_json(orient='records',force_ascii=False))
         json.close()
-        engine = create_engine('mysql+mysqlconnector://root:pw@localhost:3306/YourDB_NAME', echo=False)
-        stock_data.to_sql(name='stock_records', con=engine, if_exists = 'append', index=False)
+        print("3번마")
+        engine = create_engine('mysql+mysqlconnector://ADMIN:ADMIN@localhost:3306/stock', echo=False)
+        print("4번마")
+        stock_data.to_sql(name='stock', con=engine, if_exists = 'append', index=False)
         print(stock_data)
 
-
+        
+        print("------------------------------------")
+        
+       
     except:
+        print("예외입니다잉")
         pass
-
+    row = row+1
+    print(row)
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    if(row==10):
+        break
     
     
 stock_code.close()
