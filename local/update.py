@@ -1,9 +1,6 @@
 import json
-from datetime import datetime
-
-from pandas_datareader import data as pdr
-import fix_yahoo_finance as yf
-
+import datetime
+import pandas_datareader.data as web
 import sys
 import csv
 import socket
@@ -12,13 +9,16 @@ import pandas as pd
 import mysql.connector
 from sqlalchemy import create_engine
 
-#아무튼 해줘야한다고 합니다...
+#-----------------------------------------------------------------
+# DESC
+# 매일 돌면서 당일의 종목데이터를 DB에 저장 
+#-----------------------------------------------------------------
+
 
 # Crawling for C_DAYS
-start = datetime(2018,1,1)
-end = datetime(2020,7,27)
-
-
+C_DAYS = 1000
+end = datetime.datetime.now().date()
+start = end
 
 passcode = True
 while passcode:
@@ -58,10 +58,10 @@ for st in csvReader:
     try:
         print("0번마")
         if selection == str(1):
-            stock_data = pdr.get_data_yahoo("%s.KS" %st[0],'yahoo',start,end)
+            stock_data = web.DataReader("%s.KS" %st[0],'yahoo',start,end)
         if selection == str(2):
             print("너냐")
-            stock_data = yf.download("%s.KQ" %st[0],'2019-01-01','2020-07-27')
+            stock_data = web.DataReader("%s.KQ" %st[0],'yahoo',start,end)
             print("너냐!")
         print("1번마")
         stock_data.loc[:,'Company'] = CompanyName
@@ -90,7 +90,7 @@ for st in csvReader:
     row = row+1
     print(row)
     print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    if(row==2):
+    if(row==10):
         break
     
     
