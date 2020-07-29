@@ -12,3 +12,16 @@ CREATE TABLE stock_records (
       CONSTRAINT PLAYER_PK PRIMARY KEY (StockCode,Date)
     
 );
+
+----------------------------------------------------------------------
+CREATE TABLE KOSPI_LIST (
+       Company                  VARCHAR(100) NOT NULL,
+       StockCode                VARCHAR(6) NOT NULL,
+    
+      CONSTRAINT PLAYER_PK PRIMARY KEY (StockCode,Date)
+    
+);
+
+INSERT INTO KOSPI_LIST(Company, StockCode)
+SELECT DISTINCT Company, StockCode FROM stock;
+----------------------------------------------------------------------

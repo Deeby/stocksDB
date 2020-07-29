@@ -25,7 +25,7 @@ while passcode:
     #print("1. KOSPI DATA ")
     #print("2. KOSDAQ DATA ")
     #selection=int(input("Which one do you want to download? : "))
-    selection = str(2)
+    selection = str(1)
  
     if selection == str(1):
         stock_code = open('KOSPI.csv','r')
@@ -87,11 +87,6 @@ for st in csvReader:
     except:
         print("예외입니다잉")
         pass
-    row = row+1
-    print(row)
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    if(row==10):
-        break
     
     
 stock_code.close()
